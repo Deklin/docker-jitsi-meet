@@ -4,9 +4,10 @@ ENV DEBIAN_FRONTEND noninteractive
 ENV TERM xterm
 
 RUN apt-get update && \
-	apt-get install -y wget dnsutils vim telnet && \
-	echo 'deb http://download.jitsi.org/nightly/deb unstable/' >> /etc/apt/sources.list && \
-	wget -qO - https://download.jitsi.org/nightly/deb/unstable/archive.key | apt-key add - && \
+	apt-get install -y wget dnsutils vim telnet gnupg sudo apt-transport-https;
+
+RUN wget -qO - https://download.jitsi.org/jitsi-key.gpg.key | sudo apt-key add - && \
+	sudo sh -c "echo 'deb https://download.jitsi.org stable/' > /etc/apt/sources.list.d/jitsi-stable.list" && \
 	apt-get update && \
 	apt-get -y install jitsi-meet && \
 	apt-get clean
